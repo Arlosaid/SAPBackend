@@ -3,8 +3,27 @@ from django.contrib.auth import authenticate, login, logout
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework import serializers
+from .serializers import UserSerializer
 
 # Create your views here.
+class RegisterView(APIView):
+        def post(self,request):
+            serializers= UserSerializer(data=request.data)
+            if serializers.is_valid():
+                serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+    #def _create_user(self, username, email, password):
+        # if not email:
+        #     raise ValueError('Users must have an email address')
+
+        # user = self.model(
+        #     email=self.normalize_email(email),
+        #     password=password
+        # )
+        # user.save(using=self._db)
+        # return user
+
 class LoginView(APIView):
     def login_view(request):
         email = request.POST['email']
