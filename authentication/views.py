@@ -33,7 +33,7 @@ class RegisterView(APIView):
 
 class LoginView(APIView):
     '''Logear usuario'''
-    def login_view(self,request):
+    def post(self,request):
         email = request.data['email']
         password = request.data['password']
         email = email.replace(" ", "")
@@ -42,11 +42,24 @@ class LoginView(APIView):
             user = CustomUser.objects.get(email=email)
             pass_user = user.password
             check_pass = check_password(password,pass_user)
+
                     
         except:
             check_pass = False
         
-        
+        if check_pass:
+            try:
+                token= Token.objects.get(user=user)
+
+
+            except Token.DoesNotExist:
+                token= Token.objects.create(user=user)
+            data= {"msg":"Accepted","id":user.id,"first_name": user.first_name,"last_name":user.last_name,"email":user.email,"token":str(token.key)}
+            estado= status.HTTP_202_ACCEPTED
+        else:
+            data= {"msg": "Invalid credentials"}
+            estado= status.HTTP_401_UNAUTHORIZED
+        return Response(data,estado)
         
          
         # if user is not None:
@@ -57,6 +70,19 @@ class LoginView(APIView):
         
 class LogoutView(APIView):
     '''Logout usuario'''
-    def logout_view(request):
-        logout(request)
+    def post(self,request):
+        email = request.data['email']
+        try:
+            user= CustomUser.objects.get(email=email)
+            token= Token.objects.get(user=user)
+            token.delete()
+            mensaje= {"msg":"Successfully logged out"}
+            estado= status.HTTP_200_OK
+
+        except:
+            mensaje= {"msg":"Invalid credentials"}
+            estado= status.HTTP_401_UNAUTHORIZED
+        return Response(mensaje,estado)
+
+
 # Redirect to a success page.       
