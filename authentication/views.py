@@ -34,31 +34,38 @@ class RegisterView(APIView):
 class LoginView(APIView):
     '''Logear usuario'''
     def post(self,request):
+        '''Ask data'''
         email = request.data['email']
         password = request.data['password']
         email = email.replace(" ", "")
               
         try:
+            '''Get the user data, compared the password given by the user with the hash password'''
             user = CustomUser.objects.get(email=email)
             pass_user = user.password
             check_pass = check_password(password,pass_user)
 
                     
         except:
+            '''If check password is False'''
             check_pass = False
         
         if check_pass:
+            '''Get user token, if it doesn't exist, create token'''
             try:
                 token= Token.objects.get(user=user)
 
 
             except Token.DoesNotExist:
                 token= Token.objects.create(user=user)
+            '''Send the user data with the status code if it was accepted'''
             data= {"msg":"Accepted","id":user.id,"first_name": user.first_name,"last_name":user.last_name,"email":user.email,"token":str(token.key)}
             estado= status.HTTP_202_ACCEPTED
         else:
+            '''Send status unauthorized if the credentials are incorrect or invalid'''
             data= {"msg": "Invalid credentials"}
             estado= status.HTTP_401_UNAUTHORIZED
+            '''Send the response based on the case'''
         return Response(data,estado)
         
          
