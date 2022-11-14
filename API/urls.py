@@ -1,8 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
+from .views import UpdateView, GetView, SaveView, DeleteView
 
-'''urlpatterns = [
-    path('update/', .as_view()),
-    path('delete/', .as_view()),
-]'''
+urlpatterns = [
+    path('get/', GetView.as_view()),
+    path('save/', SaveView.as_view()),
+    path('update/<int:pk>', UpdateView.as_view()),
+    path('delete/<int:pk>', DeleteView.as_view())
+]
 
