@@ -3,7 +3,8 @@ from rest_framework.views import APIView
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from .models import *
-from .serializers import EmployeeSerializers
+from .serializers import EmployeeSerializers, EmployeeSubdivisionSerializer, SubdivsionsSerializer
+from django.db.models import Q
 
 # Create your views here.
 class GetView(APIView):
@@ -13,6 +14,13 @@ class GetView(APIView):
         serializer= EmployeeSerializers(queryset, many=True)
         serialized_data= serializer.data
         return Response(serialized_data, status.HTTP_200_OK)
+
+class GetEmployeesSubdivisionView(APIView):
+        def get(self,request):
+            queryset = Subdivisions.objects.all()
+            serializer = SubdivsionsSerializer(queryset, many=True)
+            serializer_data = serializer.data
+            return Response(serializer_data, status.HTTP_200_OK)
 
 class SaveView(APIView):
     def post(self,request):
