@@ -36,15 +36,15 @@ class CreateNewEmployeeView(APIView):
 
         return Response(serializer.data, status.HTTP_201_CREATED)
 
-class UpdateEmployeeInfoView(APIView):
-    def put(self,request, pk):
-        data= request.data
-        user= Employees.objects.get(id=pk)
-        serializer= EmployeeUpdateSerializers(instance=user, data=data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data, status.HTTP_200_OK)
-        return Response(serializer.errors, status.HTTP_404_NOT_FOUND)
+# class UpdateEmployeeInfoView(APIView):
+#     def put(self,request, pk):
+#         data= request.data
+#         user= Employees.objects.get(id=pk)
+#         serializer= EmployeeUpdateSerializers(instance=user, data=data)
+#         if serializer.is_valid(raise_exception=True):
+#             serializer.save()
+#             return Response(serializer.data, status.HTTP_200_OK)
+#         return Response(serializer.errors, status.HTTP_404_NOT_FOUND)
         
 class DeleteEmployeeView(APIView):
     permission_classes= (IsAdminUser,)
@@ -56,3 +56,39 @@ class DeleteEmployeeView(APIView):
                 return Response({"msg":"Successfully deleted"}, status.HTTP_200_OK)
         except:
             return Response({"msg":"User was not found"}, status.HTTP_404_NOT_FOUND)
+
+class UpdateEmployeeInfo(APIView):
+    def put(self, request):
+        name = request.data["name"]
+        last_name = request.data["last_name"]
+        phone = request.data["phone"]
+        email = request.data["email"]
+        division = request.data["division"]
+        subdivision = request.data["subdivision"]
+
+        # employee_name = 
+        
+        employee_email = CustomUser.objects.get(email=email)
+        if employee_email:
+            employee_email.first_name = name
+            employee_email.save()
+            employee_email.last_name = last_name
+            employee_email.save()
+        
+        employee = Employees.objects.get(user=employee_email)
+        if employee:
+            employee.phone = phone
+            employee.save()
+
+        employee_id = EmployeesSubdivision.objects.get(id_employee=employee)
+        if employee_id:
+            employee_id.id_subdivision.id_division.pk = division
+            employee_id.save()
+            employee_id.id_subdivision.pk = subdivision
+            employee_id.save()
+            
+        
+        
+
+            print(employee_id)
+        return Response({"msg":"ok"}, status.HTTP_200_OK)
