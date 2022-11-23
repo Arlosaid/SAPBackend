@@ -36,15 +36,6 @@ class CreateNewEmployeeView(APIView):
 
         return Response(serializer.data, status.HTTP_201_CREATED)
 
-# class UpdateEmployeeInfoView(APIView):
-#     def put(self,request, pk):
-#         data= request.data
-#         user= Employees.objects.get(id=pk)
-#         serializer= EmployeeUpdateSerializers(instance=user, data=data)
-#         if serializer.is_valid(raise_exception=True):
-#             serializer.save()
-#             return Response(serializer.data, status.HTTP_200_OK)
-#         return Response(serializer.errors, status.HTTP_404_NOT_FOUND)
         
 class DeleteEmployeeView(APIView):
     permission_classes= (IsAdminUser,)
@@ -63,7 +54,7 @@ class UpdateEmployeeInfo(APIView):
         last_name = request.data["last_name"]
         phone = request.data["phone"]
         email = request.data["email"]
-        division = request.data["division"]
+        #division = request.data["division"]
         subdivision = request.data["subdivision"]
 
         # employee_name = 
@@ -80,15 +71,12 @@ class UpdateEmployeeInfo(APIView):
             employee.phone = phone
             employee.save()
 
-        employee_id = EmployeesSubdivision.objects.get(id_employee=employee)
+
+        sub= Subdivisions.objects.get(pk=subdivision)
+        employee_id = EmployeesSubdivision.objects.get(id_employee= employee)
         if employee_id:
-            employee_id.id_subdivision.id_division.pk = division
+            employee_id.id_subdivision= sub
             employee_id.save()
-            employee_id.id_subdivision.pk = subdivision
-            employee_id.save()
-            
-        
-        
 
             print(employee_id)
         return Response({"msg":"ok"}, status.HTTP_200_OK)
