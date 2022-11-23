@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import  login, logout
 from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password,check_password
 from rest_framework.authtoken.models import Token
@@ -11,6 +12,7 @@ from authentication.models import CustomUser
 
 # Create your views here.
 class RegisterView(APIView):
+    permission_classes= (IsAdminUser,)
     '''Registrar usuario'''
     def post(self,request):
         email = request.data['email']

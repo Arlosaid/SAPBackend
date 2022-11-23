@@ -1,11 +1,13 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import UpdateView, GetView, SaveView, DeleteView
+from .views import UpdateEmployeeInfo, GetAllEmployeesView, GetEmployeesDivisionsDetailsView, DeleteEmployeeView, CreateNewEmployeeView
 
 urlpatterns = [
-    path('get/', GetView.as_view()),
-    path('save/', SaveView.as_view()),
-    path('update/<int:pk>', UpdateView.as_view()),
-    path('delete/<int:pk>', DeleteView.as_view())
+    path('get-all-employees', GetAllEmployeesView.as_view()),
+    path('create-new-employee', CreateNewEmployeeView.as_view()),
+    path('update-info', UpdateEmployeeInfo.as_view()),
+    path('delete-employee/<int:pk>', DeleteEmployeeView.as_view()),
+    path('get-divisions-details', GetEmployeesDivisionsDetailsView.as_view()),
+    
 ]
 
