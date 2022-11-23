@@ -2,6 +2,11 @@ from django.db import models
 from authentication.models import CustomUser            
 
 # Create your models here.
+class Roles(models.Model):
+    name_role= models.CharField(max_length=25)
+
+    def __str__(self):
+        return f"{self.name_role}"
 class Divisions(models.Model):
     name_division= models.CharField(max_length=25)
 
@@ -22,9 +27,10 @@ class Employees(models.Model):
     url_photo= models.URLField(max_length=255)
     biography= models.TextField(blank=True, null=True)
     data_entry= models.DateTimeField(auto_now_add=True)
+    id_role= models.ForeignKey(Roles,on_delete=models.DO_NOTHING,null=True)
     
     def __str__(self):
-        return f"{self.user}, {self.phone}, {self.url_photo}, {self.biography}, {self.data_entry}"
+        return f"{self.user}, {self.phone}, {self.url_photo}, {self.biography}, {self.data_entry}, {self.id_role}"
 
 class EmployeesSubdivision(models.Model):
     id_employee = models.ForeignKey(Employees, on_delete=models.DO_NOTHING)    

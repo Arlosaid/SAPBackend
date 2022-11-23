@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password,check_password
 from rest_framework.authtoken.models import Token
+from API.models import Employees
 
 from authentication.models import CustomUser
 
@@ -46,7 +47,7 @@ class LoginView(APIView):
             user = CustomUser.objects.get(email=email)
             pass_user = user.password
             check_pass = check_password(password,pass_user)
-
+            employee = Employees.objects.get(user=user)
                     
         except:
             '''If check password is False'''
@@ -61,7 +62,7 @@ class LoginView(APIView):
             except Token.DoesNotExist:
                 token= Token.objects.create(user=user)
             '''Send the user data with the status code if it was accepted'''
-            data= {"msg":"Accepted","id":user.id,"first_name": user.first_name,"last_name":user.last_name,"email":user.email,"token":str(token.key)}
+            data= {"msg":"Accepted","id":user.id,"first_name": user.first_name,"last_name":user.last_name,"email":user.email,"id_role":employee.id_role.name_role,"token":str(token.key)}
             estado= status.HTTP_202_ACCEPTED
         else:
             '''Send status unauthorized if the credentials are incorrect or invalid'''
