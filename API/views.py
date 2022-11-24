@@ -8,6 +8,15 @@ from .serializers import EmployeeSerializers, EmployeeSubdivisionSerializer, Emp
 from django.db.models import Q
 
 # Create your views here.
+class GetEmployeeInfoId(APIView):
+    def get(self, request, pk):
+        user= CustomUser.objects.get(id=pk)
+        employee= Employees.objects.get(user=user)
+        data= {"msg":"Accepted","id":user.id,"first_name": user.first_name,"last_name":user.last_name,
+        "email":user.email,"id_role":employee.id_role.name_role, "biography":employee.biography, 
+        "url_photo":employee.url_photo}
+        return Response(data, status=status.HTTP_200_OK)
+
 class GetAllEmployeesView(APIView):
     permission_classes= (IsAdminUser,)
     def get(self, request):
