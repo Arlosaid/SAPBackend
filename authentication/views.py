@@ -9,6 +9,7 @@ from rest_framework.authtoken.models import Token
 from API.models import Employees
 
 from authentication.models import CustomUser
+from API.models import Employees
 
 
 # Create your views here.
@@ -19,12 +20,17 @@ class RegisterView(APIView):
         email = request.data['email']
         password = make_password(request.data['password'])
         first_name = request.data['first_name']  
-        last_name = request.data['last_name']  
+        last_name = request.data['last_name']
+        phone= request.data['phone']
+        biography= request.data['biography']
+        url_photo= request.data['url_photo']  
         
         try:
             user = CustomUser.objects.create(email=email,password=password,first_name=first_name,last_name=last_name)
             Token.objects.create(user=user)
-            mensaje = {"msg":"Usuario registrado"}
+            employee= Employees.objects.create(user=user, phone= phone, biography=biography, url_photo=url_photo)
+            mensaje = {"msg":"Employee registrado", "id":employee.id, "first_name":user.first_name, "last_name":user.last_name,
+            "email":user.email, "phone":employee.phone, "biography":employee.biography,"url_photo":employee.url_photo}
             estado = status.HTTP_201_CREATED
         except Exception as err:
             print(err)

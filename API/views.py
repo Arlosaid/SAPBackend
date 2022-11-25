@@ -34,16 +34,16 @@ class GetEmployeesDivisionsDetailsView(APIView):
         serializer_data = serializer.data
         return Response(serializer_data, status.HTTP_200_OK)
 
-class CreateNewEmployeeView(APIView):
-    permission_classes= (IsAdminUser,)
-    def post(self,request):
-        serializer= EmployeeSerializers(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-        else:
-            print(serializer.errors)
+# class CreateNewEmployeeView(APIView):
+#     permission_classes= (IsAdminUser,)
+#     def post(self,request):
+#         serializer= EmployeeSerializers(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#         else:
+#             print(serializer.errors)
 
-        return Response(serializer.data, status.HTTP_201_CREATED)
+#         return Response(serializer.data, status.HTTP_201_CREATED)
 
         
 class DeleteEmployeeView(APIView):
@@ -58,28 +58,30 @@ class DeleteEmployeeView(APIView):
             return Response({"msg":"User was not found"}, status.HTTP_404_NOT_FOUND)
 
 class UpdateEmployeeInfo(APIView):
-    def put(self, request):
+    def put(self, request,pk):
         name = request.data["name"]
         last_name = request.data["last_name"]
         phone = request.data["phone"]
-        email = request.data["email"]
         #division = request.data["division"]
+        biography= request.data["biography"]
+        url_photo= request.data["url_photo"]
         subdivision = request.data["subdivision"]
 
-        # employee_name = 
-        
-        employee_email = CustomUser.objects.get(email=email)
-        if employee_email:
-            employee_email.first_name = name
-            employee_email.save()
-            employee_email.last_name = last_name
-            employee_email.save()
-        
-        employee = Employees.objects.get(user=employee_email)
-        if employee:
-            employee.phone = phone
-            employee.save()
+        employee= Employees.objects.get(pk=pk)
+        user= CustomUser.objects.get(id=employee.user.id)
+        print(employee)
 
+        if employee:
+            user.first_name= name
+            user.save()
+            user.last_name= last_name
+            user.save()
+            employee.phone= phone
+            employee.save()
+            employee.biography= biography
+            employee.save()
+            employee.url_photo= url_photo
+            employee.save()
 
         sub= Subdivisions.objects.get(pk=subdivision)
         employee_id = EmployeesSubdivision.objects.get(id_employee= employee)
@@ -87,5 +89,33 @@ class UpdateEmployeeInfo(APIView):
             employee_id.id_subdivision= sub
             employee_id.save()
 
-            print(employee_id)
-        return Response({"msg":"ok"}, status.HTTP_200_OK)
+        mensaje = {"msg":"Employee actualizado", "id":employee.id, "first_name":user.first_name, "last_name":user.last_name,
+            "email":user.email, "phone":employee.phone, "biography":employee.biography,"url_photo":employee.url_photo,"id_subdivision":employee_id.id_subdivision.name_subdivision}    
+        return Response(mensaje, status=status.HTTP_200_OK)
+
+        # employee_name = 
+        # user= CustomUser.objects.get(id=pk)
+        # if user:
+        #     user.first_name = name
+        #     user.save()
+        #     user.last_name = last_name
+        #     user.save()
+        
+        # employee = Employees.objects.get(user=user)
+        # if employee:
+        #     employee.phone = phone
+        #     employee.save()
+        #     employee.biography= biography
+        #     employee.save()
+        #     employee.url_photo= url_photo
+        #     employee.save()
+
+
+        # sub= Subdivisions.objects.get(pk=subdivision)
+        # employee_id = EmployeesSubdivision.objects.get(id_employee= employee)
+        # if employee_id:
+        #     employee_id.id_subdivision= sub
+        #     employee_id.save()
+
+        #     print(employee_id)
+        # return Response({"msg":"ok"}, status.HTTP_200_OK)
