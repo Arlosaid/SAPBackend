@@ -24,7 +24,7 @@ class Subdivisions(models.Model):
 class Employees(models.Model):
     user= models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING)
     phone= models.IntegerField(unique=True)
-    url_photo= models.URLField(max_length=255)
+    url_photo= models.ImageField(upload_to="profile_photo",null=True,blank=True)
     biography= models.TextField(blank=True, null=True)
     data_entry= models.DateTimeField(auto_now_add=True)
     id_role= models.ForeignKey(Roles,on_delete=models.DO_NOTHING,null=True)

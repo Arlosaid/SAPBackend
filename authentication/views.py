@@ -6,7 +6,9 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password,check_password
 from rest_framework.authtoken.models import Token
-from API.models import Employees
+from API.models import Employees,Roles,EmployeesSubdivision,Subdivisions,Divisions
+ 
+
 
 from authentication.models import CustomUser
 from API.models import Employees
@@ -23,14 +25,23 @@ class RegisterView(APIView):
         last_name = request.data['last_name']
         phone= request.data['phone']
         biography= request.data['biography']
-        url_photo= request.data['url_photo']  
+        url_photo= request.FILE['url_photo']  
+        id_division= request.data['id_division']
+        id_subdivision=request.data['id_subdivision']
         
         try:
             user = CustomUser.objects.create(email=email,password=password,first_name=first_name,last_name=last_name)
             Token.objects.create(user=user)
-            employee= Employees.objects.create(user=user, phone= phone, biography=biography, url_photo=url_photo)
+            id_role= Roles.objects.get(id=2)
+            employee= Employees.objects.create(user=user, phone= phone, biography=biography, url_photo=url_photo,id_role=id_role)
+            division= Divisions.objects.get(id=id_division)
+            subdivision= Subdivisions.objects.get(id=id_subdivision)
+            E_subdivision=EmployeesSubdivision.objects.create(id_employee=employee,id_subdivision=subdivision)
+            
+            
+            
             mensaje = {"msg":"Employee registrado", "id":employee.id, "first_name":user.first_name, "last_name":user.last_name,
-            "email":user.email, "phone":employee.phone, "biography":employee.biography,"url_photo":employee.url_photo}
+            "email":user.email, "phone":employee.phone, "biography":employee.biography,"url_photo":employee.url_photo, "id_role":id_role.name_role,"division":division.name_division,"subdivision":subdivision.name_subdivision}
             estado = status.HTTP_201_CREATED
         except Exception as err:
             print(err)
