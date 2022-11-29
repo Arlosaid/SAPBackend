@@ -7,7 +7,10 @@ from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password,check_password
 from rest_framework.authtoken.models import Token
 from API.models import Employees,Roles,EmployeesSubdivision,Subdivisions,Divisions
- 
+from rest_framework.parsers import MultiPartParser
+from rest_framework.decorators import parser_classes
+
+
 
 
 from authentication.models import CustomUser
@@ -15,6 +18,7 @@ from API.models import Employees
 
 
 # Create your views here.
+@parser_classes((MultiPartParser, ))
 class RegisterView(APIView):
     permission_classes= (IsAdminUser,)
     '''Registrar usuario'''
@@ -25,7 +29,7 @@ class RegisterView(APIView):
         last_name = request.data['last_name']
         phone= request.data['phone']
         biography= request.data['biography']
-        url_photo= request.FILE['url_photo']  
+        url_photo= request.FILES['url_photo']  
         id_division= request.data['id_division']
         id_subdivision=request.data['id_subdivision']
         
