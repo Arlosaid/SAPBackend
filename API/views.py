@@ -15,7 +15,7 @@ class GetEmployeeInfoId(APIView):
         
         data= {"msg":"Accepted","id":employee.user.id,"first_name": employee.user.first_name,"last_name":employee.user.last_name,
         "email":employee.user.email,"id_role":employee.id_role.name_role, "biography":employee.biography, 
-        "url_photo":employee.url_photo}
+        "url_photo":str(employee.url_photo)}
         return Response(data, status=status.HTTP_200_OK)
 
 class GetAllEmployeesView(APIView):
@@ -91,7 +91,7 @@ class UpdateEmployeeInfo(APIView):
             employee_id.save()
 
         mensaje = {"msg":"Employee actualizado", "id":employee.id, "first_name":user.first_name, "last_name":user.last_name,
-            "email":user.email, "phone":employee.phone, "biography":employee.biography,"url_photo":employee.url_photo,"id_subdivision":employee_id.id_subdivision.name_subdivision}    
+            "email":user.email, "phone":employee.phone, "biography":employee.biography,"url_photo":str(employee.url_photo),"id_subdivision":employee_id.id_subdivision.name_subdivision}    
         return Response(mensaje, status=status.HTTP_200_OK)
 
         # employee_name = 

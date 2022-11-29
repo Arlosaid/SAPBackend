@@ -45,7 +45,7 @@ class RegisterView(APIView):
             
             
             mensaje = {"msg":"Employee registrado", "id":employee.id, "first_name":user.first_name, "last_name":user.last_name,
-            "email":user.email, "phone":employee.phone, "biography":employee.biography,"url_photo":employee.url_photo, "id_role":id_role.name_role,"division":division.name_division,"subdivision":subdivision.name_subdivision}
+            "email":user.email, "phone":employee.phone, "biography":employee.biography,"url_photo":str(employee.url_photo), "id_role":id_role.name_role,"division":division.name_division,"subdivision":subdivision.name_subdivision}
             estado = status.HTTP_201_CREATED
         except Exception as err:
             print(err)

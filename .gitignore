@@ -215,3 +215,4 @@ $RECYCLE.BIN/
 db.sqlite3
 .gitignore/
 venv/
+media/
