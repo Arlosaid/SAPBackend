@@ -51,11 +51,18 @@ class DeleteEmployeeView(APIView):
     permission_classes= (IsAdminUser,)
     def delete(self, request, pk):
         try:
-            user= Employees.objects.get(id=pk)
-            if user:
+            employee= Employees.objects.get(id=pk)
+            user=CustomUser.objects.get(id=employee.user.id)
+            employee_sub= EmployeesSubdivision.objects.get(id_employee=employee)
+            
+            if employee:
+                employee_sub.delete()
+                employee.delete()
                 user.delete()
+                
                 return Response({"msg":"Successfully deleted"}, status.HTTP_200_OK)
-        except:
+        except Exception as err:
+            print(err)
             return Response({"msg":"User was not found"}, status.HTTP_404_NOT_FOUND)
 
 class UpdateEmployeeInfo(APIView):
@@ -63,9 +70,9 @@ class UpdateEmployeeInfo(APIView):
         name = request.data["name"]
         last_name = request.data["last_name"]
         phone = request.data["phone"]
-        #division = request.data["division"]
         biography= request.data["biography"]
         url_photo= request.data["url_photo"]
+        division = request.data["division"]
         subdivision = request.data["subdivision"]
 
         employee= Employees.objects.get(pk=pk)
@@ -85,13 +92,16 @@ class UpdateEmployeeInfo(APIView):
             employee.save()
 
         sub= Subdivisions.objects.get(pk=subdivision)
+        div= Divisions.objects.get(id=sub.id_division.id)
         employee_id = EmployeesSubdivision.objects.get(id_employee= employee)
         if employee_id:
             employee_id.id_subdivision= sub
             employee_id.save()
+            employee_id.id_subdivision.id_division=div
+            employee_id.save()
 
         mensaje = {"msg":"Employee actualizado", "id":employee.id, "first_name":user.first_name, "last_name":user.last_name,
-            "email":user.email, "phone":employee.phone, "biography":employee.biography,"url_photo":str(employee.url_photo),"id_subdivision":employee_id.id_subdivision.name_subdivision}    
+            "email":user.email, "phone":employee.phone, "biography":employee.biography,"url_photo":str(employee.url_photo),"id_division":employee_id.id_subdivision.id_division.name_division,"id_subdivision":employee_id.id_subdivision.name_subdivision}    
         return Response(mensaje, status=status.HTTP_200_OK)
 
         # employee_name = 
