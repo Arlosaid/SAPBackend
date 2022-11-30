@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('API', '0001_initial'),
+        ('api', '0001_initial'),
     ]
 
     operations = [
@@ -19,8 +19,8 @@ class Migration(migrations.Migration):
             name='EmployeesSubdivision',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('id_employee', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='API.employees')),
-                ('id_subdivison', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='API.subdivisions')),
+                ('id_employee', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='api.employees')),
+                ('id_subdivison', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='api.subdivisions')),
             ],
         ),
     ]

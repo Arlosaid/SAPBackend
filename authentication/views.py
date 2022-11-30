@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password,check_password
 from rest_framework.authtoken.models import Token
-from API.models import Employees,Roles,EmployeesSubdivision,Subdivisions,Divisions
+from api.models import Employees,Roles,EmployeesSubdivision,Subdivisions,Divisions
 from rest_framework.parsers import MultiPartParser
 from rest_framework.decorators import parser_classes
 
@@ -14,7 +14,7 @@ from rest_framework.decorators import parser_classes
 
 
 from authentication.models import CustomUser
-from API.models import Employees
+from api.models import Employees
 
 
 # Create your views here.

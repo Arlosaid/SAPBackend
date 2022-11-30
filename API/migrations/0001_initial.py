@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name_subdivision', models.CharField(max_length=25)),
-                ('id_division', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='API.divisions')),
+                ('id_division', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='api.divisions')),
             ],
         ),
         migrations.CreateModel(
@@ -44,8 +44,8 @@ class Migration(migrations.Migration):
                 ('url_photo', models.URLField(max_length=255)),
                 ('biography', models.TextField(blank=True, null=True)),
                 ('data_entry', models.DateTimeField(auto_now_add=True)),
-                ('id_role', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='API.roles')),
-                ('id_subdivision', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='API.subdivisions')),
+                ('id_role', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='api.roles')),
+                ('id_subdivision', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='api.subdivisions')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to=settings.AUTH_USER_MODEL)),
             ],
         ),

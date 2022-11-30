@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'authentication',
-    'API',
+    'api',
     'corsheaders'
 ]
 REST_FRAMEWORK = {
@@ -101,6 +101,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+
        'NAME': 'sapemployees',
        'USER': 'postgres',
        'PASSWORD': 'admin',
