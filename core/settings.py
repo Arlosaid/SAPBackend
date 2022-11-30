@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'authentication',
-    'API',
+    'api',
     'corsheaders'
 ]
 REST_FRAMEWORK = {
@@ -101,7 +101,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-       'NAME': 'DBSAP',
+       'NAME': 'sap',
        'USER': 'postgres',
        'PASSWORD': 'admin',
        'HOST': 'localhost',

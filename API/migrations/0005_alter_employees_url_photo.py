@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('API', '0004_roles_employees_id_role'),
+        ('api', '0004_roles_employees_id_role'),
     ]
 
     operations = [

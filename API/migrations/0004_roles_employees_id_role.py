@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('API', '0003_rename_id_subdivison_employeessubdivision_id_subdivision_and_more'),
+        ('api', '0003_rename_id_subdivison_employeessubdivision_id_subdivision_and_more'),
     ]
 
     operations = [
@@ -21,6 +21,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='employees',
             name='id_role',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='API.roles'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='api.roles'),
         ),
     ]
