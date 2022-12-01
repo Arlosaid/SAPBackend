@@ -29,7 +29,10 @@ class RegisterView(APIView):
         last_name = request.data['last_name']
         phone= request.data['phone']
         biography= request.data['biography']
-        url_photo= request.FILES['url_photo']  
+        try:
+            url_photo= request.FILES['url_photo']
+        except:
+            url_photo=""
         id_division= request.data['id_division']
         id_subdivision=request.data['id_subdivision']
         

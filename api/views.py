@@ -10,16 +10,19 @@ from django.db.models import Q
 # Create your views here.
 class GetEmployeeInfoId(APIView):
     def get(self, request, pk):
-        
+        URL = "http://interns.syncronik.com/media/"
         employee= Employees.objects.get(id=pk)
+        employee_sub= EmployeesSubdivision.objects.get(id_employee=employee)
+        sub= Subdivisions.objects.get(pk=employee_sub.id_subdivision.id)
+        div= Divisions.objects.get(id=sub.id_division.id)
         
-        data= {"msg":"Accepted","id":employee.user.id,"first_name": employee.user.first_name,"last_name":employee.user.last_name,
+        data= {"msg":"Accepted","id":employee.id,"first_name": employee.user.first_name,"last_name":employee.user.last_name,
         "email":employee.user.email,"id_role":employee.id_role.name_role, "biography":employee.biography, 
-        "url_photo":str(employee.url_photo)}
+        "url_photo":URL + str(employee.url_photo),"division":div.name_division,"subdivision":sub.name_subdivision}
         return Response(data, status=status.HTTP_200_OK)
 
 class GetAllEmployeesView(APIView):
-    permission_classes= (IsAdminUser,)
+    #permission_classes= (IsAdminUser,)
     def get(self, request):
         queryset= Employees.objects.all()
         print(queryset)
@@ -28,7 +31,7 @@ class GetAllEmployeesView(APIView):
         return Response(serialized_data, status.HTTP_200_OK)
 
 class GetEmployeesDivisionsDetailsView(APIView):
-    permission_classes= (IsAdminUser,)
+    #permission_classes= (IsAdminUser,)
     def get(self,request):
         queryset = EmployeesSubdivision.objects.all()
         serializer = EmployeeSubdivisionSerializer(queryset, many=True)
